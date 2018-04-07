@@ -1,6 +1,6 @@
 #include <projet.hpp>
 
-
+//hello world
 {//Fourmi base
 /*Crée une fourmi ne portant pas de sucre
  * @param a l'indice de la fourmi dans tabFourmi
@@ -67,7 +67,7 @@ void chargerSucre(fourmi &f){
 /*Déplace une fourmi
  * @param f la fourmi
 */
-void déplaceFourmi(fourmi &f,coord c){
+void deplaceFourmi(fourmi &f,coord c){
     f.c = c;
 }
 
