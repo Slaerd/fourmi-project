@@ -1,4 +1,7 @@
 #include <projet.hpp>
+#include <cstdlib>
+
+const int TAILLE = 5;
 
 {//Fourmi base
 
@@ -126,5 +129,54 @@ bool plusLoinNid(place p1, place p2){
 	return pheroNid(p1) <= pheroNid(p2);
 }
 
-void placerNid(grille &g, ensCoord ec);
+void placerNid(grille &g, ensCoord ec){
+	for(int i = 0; i < ec.nb; i++){
+		place p;
+		chargerPlace(g,ec.tab[i],p);
+		p.nid = 1.;
+		rangerPlace(g,p);
+	}
+}
+
+void placerSucre(grille &g, ensCoord ec){
+	for(int i = 0; i < ec.nb; i++){
+		place p;
+		chargerPlace(g,ec.tab[i],p);
+		p.sucre = true;
+		rangerPlace(g,p);
+	}
+}
+
+void placerFourmis(grille &g, tabFourmi t){
+	for(int i = 0; i < t.nb; i++){
+		place p;
+		chargerPlace(g,t.c,p);
+		p.fourmi = t.tab[i].n;
+		rangerPlace(g,p);
+	}
+}
+
+void initialiserGrille(grille &g,tabFourmi t, ensCoord ec_s, ensCoord ec_n,){
+	placerNid(g,ec_n);
+	placerSucre(g,ec_s);
+	placerFourmis(g,t);
+	//lineariserPheroNid(g);
+}
+
+void diminuerPheroSucreGrille(grille &g){
+	for(int i = 0; i < TAILLE; i++){
+		for(int j = 0; j < TAILLE; j++){
+			//Vincent
+}}}
+
+//Checks
+
+void coherence(tabFourmi t, grille g){
+	for(int i = 0; i < t.nb; i++){
+		if(t.tab[i].n != i) exit(1);
+	//Vincent	
+}}
+	
+
+	
 	
