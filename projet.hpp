@@ -12,7 +12,7 @@ struct fourmi{
 };
 
 struct tabFourmi{
-    int tab[TAILLE];
+    fourmi tab[TAILLE];
     int nb; //nombre d'éléments du tableau
 };
 
