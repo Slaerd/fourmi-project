@@ -30,8 +30,8 @@ struct ensCoord {
 };
 
 
-struct grille {
-	place t[TAILLE] tab[TAILLE];
+struct grille{
+	vector<vector<place>> t;
 };
 	
 
