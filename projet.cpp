@@ -197,7 +197,7 @@ void initialiserGrille(grille &g,tabFourmi t, ensCoord ec_s, ensCoord ec_nid){
 void diminuerPheroSucreGrille(grille &g){
 	for(int i = 0; i < TAILLE; i++){
 		for(int j = 0; j < TAILLE; j++){
-			//Vincent
+			g[i][j].phero = g[i][j].phero - 5;
 }}}
 }
 
