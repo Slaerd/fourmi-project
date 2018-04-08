@@ -182,6 +182,10 @@ void diminuerPheroSucre(place &p);
 void deplaceFourmi(fourmi &f, place &p1, place &p2);
 
 //	BASIC grille
+
+/**Initialise une grille vide
+ * @param[out] g une grille
+**/
 void chargerGrilleVide(grille &g);
 
 void chargerPlace(grille g, coord c, place &p);
