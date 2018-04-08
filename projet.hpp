@@ -190,7 +190,17 @@ void deplaceFourmi(fourmi &f, place &p1, place &p2);
 **/
 void chargerGrilleVide(grille &g);
 
+/**Permet d'acceder a une place a modifier de la grille
+ * @param g la grille
+ * @param[in] c la coordonnee de la place
+ * @param[out] la place cherchee
+**/
 void chargerPlace(grille g, coord c, place &p);
+
+/**Range la place dans la grille apres l'avoir modifiee
+ * @param[in/out] g la grille
+ * @param[in] p la place
+**/
 void rangerPlace(grille &g, place p);
 
 //////////////////// MOUVEMENT fourmi /////////////////////
