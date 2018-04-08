@@ -89,7 +89,7 @@ bool surUnePiste(place p){
 }
 
 void poserSucre(place &p){
-	p.sucre = true;
+	p.sucre++;
 }
 void poserNid(place &p){
 	p.nid = 1.;
@@ -156,7 +156,7 @@ void placerNid(grille &g, ensCoord ec){
 	for(int i = 0; i < ec.nb; i++){
 		place p;
 		chargerPlace(g,ec.tab[i],p);
-		p.nid = 1.;
+		poserNid(p);
 		rangerPlace(g,p);
 	}
 }
@@ -165,7 +165,7 @@ void placerSucre(grille &g, ensCoord ec){
 	for(int i = 0; i < ec.nb; i++){
 		place p;
 		chargerPlace(g,ec.tab[i],p);
-		p.sucre = true;
+		poserSucre(p);
 		rangerPlace(g,p);
 	}
 }
@@ -199,26 +199,49 @@ bool condition_1(fourmi f, place p1, place p2){
 	return not porteSucre(f) and contientSucre(p2);
 }
 	
+void action_1(fourmi &f, place &p1, place &p2){
+	if(condition_1(f,p1,p2){
+		chargerSucre(f);
+		p2.sucre = false;
+		poserPheroSucre(p1, 255);
+	}
+}
 bool condition_2(fourmi f, place p1, place p2){
 	return porteSucre(f) and contientNid(p2);
 }
 
+void action_2(fourmi &f, place &p1, place &p2){
+	if(condition_2(f,p1,p2)){
+		poserSucre(p2);
+		dechargerSucre(f);
+	}
+}
+	
 bool condition_3(fourmi f, place p1, place p2){
 	return porteSucre(f) and estVide(p2) 
 	and plusProcheNid(p2,p1);
 }
 
+void action_3(fourmi &f, place &p1, place &p2){
+	
 bool condition_4(fourmi f, place p1, place p2){
 	return not porteSucre(f) and surUnePiste(p1) 
 	and surUnePiste(p2) and plusLoinNid(p2,p1);
 }
+
+void action_4(fourmi &f, place &p1, place &p2){
+	
 bool condition_5(fourmi f, place p1, place p2){
 	return not porteSucre(f) and surUnePiste(p2) 
 	and estVide(p2);
 }
+
+void action_5(fourmi &f, place &p1, place &p2){
 bool condition_6(fourmi f, place p1, place p2){
 	return not porteSucre and estVide(p2);
 }
+
+void action_6(fourmi &f, place &p1, place &p2){
 
 bool condition_n(int regle, fourmi f, place p1, place p2){
 	switch(regle){

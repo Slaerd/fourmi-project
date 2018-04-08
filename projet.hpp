@@ -19,7 +19,7 @@ struct tabFourmi{
 
 struct place{
 	coord c;
-	bool sucre;
+	int sucre;
 	int fourmi;
 	int phero;
 	float nid;
