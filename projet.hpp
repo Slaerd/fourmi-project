@@ -1,5 +1,7 @@
 const int TAILLE = 5;
 
+typedef vector<vector<place>> grille;
+
 {///////////// TYPES ///////////////
 struct coord{
 	int x;
@@ -30,11 +32,6 @@ struct ensCoord {
 	int nb;
 };
 }
-
-
-struct grille{
-	vector<vector<place>> t;
-};
 	
 
 {//////////////// BASIC fourmi ////////////////////
