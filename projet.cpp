@@ -130,6 +130,13 @@ void chargerGrilleVide(grille &g){
 	}
 }
 
+void chargerPlace(grille g,coord c, place &p){
+	p = g.t[c.x][c.y];
+}
+
+void rangerPlace(grille &g, place p){
+	g.t[p.c.x][p.c.y] = p;
+}
 
 
 }
