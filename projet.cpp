@@ -129,10 +129,10 @@ void deplacerFourmi(fourmi &f, place &p1, place &p2){
 
 void chargerGrilleVide(grille &g){
 	coord c;
-	for(int i=0; i<TAILLE; i++){
+	for(int i=0; i<TAILLE; i++){	//Faut voir pour les problèmes lie a TAILLE
 		for(int j=0; j<TAILLE; j++){
 			c = creerCoord(i,j);
-			g.tab[i].t[j] = creerPlaceVide(c);
+			g.t[i][j] = creerPlaceVide(c);
 		}
 	}
 }
