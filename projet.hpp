@@ -28,6 +28,11 @@ struct ensCoord {
 	coord tab[TAILLE];
 	int nb;
 };
+
+
+struct grille {
+	place t[TAILLE] tab[TAILLE];
+};
 	
 
 {//	BASIC fourmi
@@ -77,7 +82,12 @@ void chargerSucre(fourmi &f);
 */
 void deplaceFourmi(&fourmi, coord);
 }
-void chargerTabFourmis(fourmi &f; ensCord);
+
+/**Crée un ensemble de fourmi positionnees aux coordonnees spécifiees par l'ensemble de coordonnees donné en 2eme parametre
+ * @param[out] tf un tabFourmi
+ * @param[in] ec un ensCoord
+**/
+void chargerTabFourmis(tabFourmi &tf, ensCoord ec);
 
 
 //	BASIC place
