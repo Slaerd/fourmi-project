@@ -125,17 +125,17 @@ void chargerGrilleVide(grille &g){
 	for(int i=0; i<TAILLE; i++){	//Faut voir pour les problèmes lie a TAILLE
 		for(int j=0; j<TAILLE; j++){
 			c = creerCoord(i,j);
-			g.t[i][j] = creerPlaceVide(c);
+			g[i][j] = creerPlaceVide(c);
 		}
 	}
 }
 
 void chargerPlace(grille g,coord c, place &p){
-	p = g.t[c.x][c.y];
+	p = g[c.x][c.y];
 }
 
 void rangerPlace(grille &g, place p){
-	g.t[p.c.x][p.c.y] = p;
+	g[p.c.x][p.c.y] = p;
 }
 
 
