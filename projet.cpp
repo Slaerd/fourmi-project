@@ -43,6 +43,17 @@ void deplaceFourmi(fourmi &f,coord c){
 
 }
 
+{//TabFourmi base
+
+void chargerTabFourmis(tabFourmi &tf, ensCoord ec){
+	for(int i=0; i<ec.nb; i++){
+		tf.tab[i] = creerFourmi(i,ec.tab[i]);
+		tf.nb++;
+	}	
+}
+
+}
+
 {//Place base
 
 struct place{
@@ -112,6 +123,25 @@ void deplacerFourmi(fourmi &f, place &p1, place &p2){
 	enleverFourmi(p1);
 }
 }
+
+
+{//Grile base
+
+void chargerGrilleVide(grille &g){
+	coord c;
+	for(int i=0; i<TAILLE; i++){
+		for(int j=0; j<TAILLE; j++){
+			c = creerCoord(i,j);
+			g.tab[i].t[j] = creerPlaceVide(c);
+		}
+	}
+}
+
+
+
+}
+
+
 
 //Composes
 bool estVide(place p){
