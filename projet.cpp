@@ -284,7 +284,7 @@ void mettreAJourEnsFourmis(grille &g, tabFourmi &t){
 void coherence(tabFourmi t, grille g){
 	for(int i = 0; i < t.nb; i++){
 		if(t.tab[i].n != i) exit(1);
-	//Vincent	
+		if(t.tab[i].c != g[t.tab[i].c.x][t.tab[i].c.y];
 }}
 	
 int main(){
