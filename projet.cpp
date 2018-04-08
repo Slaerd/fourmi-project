@@ -3,13 +3,14 @@
 
 const int TAILLE = 5;
 
-{//Fourmi base
+{////////////////// BASE fourmi //////////////////
 
 fourmi creerFourmi(int a, coord c){
     fourmi f;
     f.n = a;
     f.sucre = 0;
     f.c = c;
+	return f;
 }
 
 coord coordFourmis(fourmi f){
@@ -43,7 +44,7 @@ void deplaceFourmi(fourmi &f,coord c){
 
 }
 
-{//TabFourmi base
+{/////////////////// BASE tabFourmi ////////////////////
 
 void chargerTabFourmis(tabFourmi &tf, ensCoord ec){
 	for(int i=0; i<ec.nb; i++){
@@ -54,15 +55,7 @@ void chargerTabFourmis(tabFourmi &tf, ensCoord ec){
 
 }
 
-{//Place base
-
-struct place{
-	coord c;
-	bool sucre;
-	int fourmi;
-	int phero;
-	float nid;
-};
+{/////////////////// BASE place ////////////////////////
 
 place creerPlaceVide(coord c){
 	place p;
@@ -125,7 +118,7 @@ void deplacerFourmi(fourmi &f, place &p1, place &p2){
 }
 
 
-{//Grile base
+{/////////////////// BASE grille ///////////////////////
 
 void chargerGrilleVide(grille &g){
 	coord c;
@@ -143,7 +136,7 @@ void chargerGrilleVide(grille &g){
 
 
 
-//Composes
+{//////////// COMPOSES ascendants ////////////////
 bool estVide(place p){
 	b = numeroFourmi(p) == -1;
 	b = b and not contientSucre(p);
@@ -186,7 +179,8 @@ void placerFourmis(grille &g, tabFourmi t){
 	}
 }
 
-void initialiserGrille(grille &g,tabFourmi t, ensCoord ec_s, ensCoord ec_n,){
+void initialiserGrille(grille &g,tabFourmi t, ensCoord ec_s, ensCoord ec_nid){
+	chargerGrilleVide(g);
 	placerNid(g,ec_n);
 	placerSucre(g,ec_s);
 	placerFourmis(g,t);
@@ -198,14 +192,84 @@ void diminuerPheroSucreGrille(grille &g){
 		for(int j = 0; j < TAILLE; j++){
 			//Vincent
 }}}
+}
 
-//Checks
+{//////////// COMPOSES descendants ///////////////
+bool condition_1(fourmi f, place p1, place p2){
+	return not porteSucre(f) and contientSucre(p2);
+}
+	
+bool condition_2(fourmi f, place p1, place p2){
+	return porteSucre(f) and contientNid(p2);
+}
+
+bool condition_3(fourmi f, place p1, place p2){
+	return porteSucre(f) and estVide(p2) 
+	and plusProcheNid(p2,p1);
+}
+
+bool condition_4(fourmi f, place p1, place p2){
+	return not porteSucre(f) and surUnePiste(p1) 
+	and surUnePiste(p2) and plusLoinNid(p2,p1);
+}
+bool condition_5(fourmi f, place p1, place p2){
+	return not porteSucre(f) and surUnePiste(p2) 
+	and estVide(p2);
+}
+bool condition_6(fourmi f, place p1, place p2){
+	return not porteSucre and estVide(p2);
+}
+
+bool condition_n(int regle, fourmi f, place p1, place p2){
+	switch(regle){
+		case 1:
+			return condition_1(f, p1, p2);
+		case 2:
+			return condition_2(f, p1, p2);
+		case 3:
+			return condition_3(f, p1, p2);
+		case 4:
+			return condition_4(f, p1, p2);
+		case 5:
+			return condition_5(f, p1, p2);
+		case 6:
+			return condition_6(f, p1, p2);
+		default:
+			cerr << "Regle " << regle << "inexistante." << endl;
+			exit(1);
+	}
+}
+void mettreAJourUneFourmi(grille &g, fourmi &f);
+
+void initialiserEmplacements(tabFourmi &t, ensCoord &ec_sucre, ensCoord &ec_nid);
+void dessinerGrille(grille &g);
+void mettreAJourEnsFourmis(grille &g, tabFourmi &t){
+	for(int i = 0; i < t.nb; i++)
+		mettreAJourUneFourmi(g, t.tab[i]);
+}
+}
+
+{//////////// Checks ou Tests ////////////////////
 
 void coherence(tabFourmi t, grille g){
 	for(int i = 0; i < t.nb; i++){
 		if(t.tab[i].n != i) exit(1);
 	//Vincent	
 }}
+	
+int main(){
+	grille g;
+	tabFourmi t;
+	ensCoord ec_sucre, ec_nid;
+	initialiserEmplacements(tabFourmi &t, ensCoord &ec_sucre, ensCoord &ec_nid);
+	initialiserGrille(g, t, ec_sucre, ec_nid);
+	while(true){
+		dessinerGrille(g);
+		mettreAJourEnsFourmis(g,t);
+	}
+	return 0;
+}
+	
 	
 
 	

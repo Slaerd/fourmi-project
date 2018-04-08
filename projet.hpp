@@ -1,5 +1,6 @@
 const int TAILLE = 5;
 
+{///////////// TYPES ///////////////
 struct coord{
 	int x;
 	int y;
@@ -28,6 +29,7 @@ struct ensCoord {
 	coord tab[TAILLE];
 	int nb;
 };
+}
 
 
 struct grille{
@@ -35,7 +37,7 @@ struct grille{
 };
 	
 
-{//	BASIC fourmi
+{//////////////// BASIC fourmi ////////////////////
 /*Cree une fourmi ne portant pas de sucre
  * @param a l'indice de la fourmi dans tabFourmi
  * @param c les coordonnées de la fourmi
@@ -90,7 +92,7 @@ void deplaceFourmi(&fourmi, coord);
 void chargerTabFourmis(tabFourmi &tf, ensCoord ec);
 
 
-//	BASIC place
+//////////////////	BASIC place ////////////////////
 /*Cree une place vide
  *@param c les coordonnées de la place
  *@return la place
@@ -181,7 +183,7 @@ void diminuerPheroSucre(place &p);
  */
 void deplaceFourmi(fourmi &f, place &p1, place &p2);
 
-//	BASIC grille
+//////////////////	BASIC grille /////////////////////
 
 /**Initialise une grille vide
  * @param[out] g une grille
@@ -191,14 +193,26 @@ void chargerGrilleVide(grille &g);
 void chargerPlace(grille g, coord c, place &p);
 void rangerPlace(grille &g, place p);
 
-//Composes place
+//////////////////// MOUVEMENT fourmi /////////////////////
+
+void mettreAJourEnsFourmis(grille &g, tabFourmi &t);
+void mettreAJourUneFourmi(grille &g, fourmi &f);
+bool condition_n(int regle, fourmi f, place p1, place p2);
+void action_n(int regle, fourmi &f, place &p1, place &p2);
+coord voisinVideAleatoire(grille g, place p);
+int cardinal(ensCoord ec);
+coord retourneElement(ensCoord ec, int i);
+
+//////////////////// COMPOSES place ///////////////////////
+
 bool estVide(place p);
 bool plusProcheNid(place p1, place p2);
 bool plusLoinNid(place p1, place p2);
 
-//Composes grille
+//////////////////// COMPOSES grille //////////////////////
 void placerNid(grille &g, ensCoord ec);
 void placerSucre(grille &g, ensCoord ec);
 void placerFourmis(grille &g, tabFourmi t);
+void initialiserGrille(tabFourmi t, ensCoord ec_sucre, ensCoord ec_nid);
 void lineariserPheroNid(grille &g);
 void diminuerPheroSucreGrille(grille &g);
