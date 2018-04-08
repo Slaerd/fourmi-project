@@ -1,7 +1,5 @@
 const int TAILLE = 5;
 
-typedef vector<vector<place>> grille;
-
 {///////////// TYPES ///////////////
 struct coord{
 	int x;
@@ -31,6 +29,9 @@ struct ensCoord {
 	coord tab[TAILLE];
 	int nb;
 };
+
+typedef vector<vector<place>> grille;
+
 }
 	
 
