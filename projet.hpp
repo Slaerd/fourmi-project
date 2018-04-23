@@ -1,4 +1,10 @@
-const int TAILLE = 5;
+#include <iostream>
+#include <vector>
+
+using namespace std;
+
+const int TAILLE = 20;
+const int NMAX = 40;
 
 {///////////// TYPES ///////////////
 struct coord{
@@ -13,7 +19,7 @@ struct fourmi{
 };
 
 struct tabFourmi{
-    fourmi tab[TAILLE];
+    fourmi tab[NMAX];
     int nb; //nombre d'éléments du tableau
 };
 
@@ -26,7 +32,7 @@ struct place{
 };
 
 struct ensCoord {
-	coord tab[TAILLE];
+	coord tab[NMAX];
 	int nb;
 };
 
@@ -207,9 +213,6 @@ void mettreAJourEnsFourmis(grille &g, tabFourmi &t);
 void mettreAJourUneFourmi(grille &g, fourmi &f);
 bool condition_n(int regle, fourmi f, place p1, place p2);
 void action_n(int regle, fourmi &f, place &p1, place &p2);
-coord voisinVideAleatoire(grille g, place p);
-int cardinal(ensCoord ec);
-coord retourneElement(ensCoord ec, int i);
 
 //////////////////// COMPOSES place ///////////////////////
 

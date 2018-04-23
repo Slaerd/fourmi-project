@@ -1,7 +1,9 @@
 #include <projet.hpp>
 #include <cstdlib>
+#include <vector>
 
-const int TAILLE = 5;
+const int TAILLE = 20;
+const int NMAX = 40;
 
 {////////////////// BASE fourmi //////////////////
 
@@ -104,8 +106,8 @@ void enleverFourmi(place &p){
 void poserPheroNid(place &p, float i){
 	p.nid = i;
 }
-void poserPheroSucre(place &p, float i){
-	p.phero = i;
+void poserPheroSucre(place &p){
+	p.phero = 255;
 }
 void diminuerPheroSucre(place &p){
 	if(p.phero != 0) p.phero-= 5;
@@ -117,12 +119,11 @@ void deplacerFourmi(fourmi &f, place &p1, place &p2){
 }
 }
 
-
 {/////////////////// BASE grille ///////////////////////
 
 void chargerGrilleVide(grille &g){
 	coord c;
-	for(int i=0; i<TAILLE; i++){	//Faut voir pour les problèmes lie a TAILLE
+	for(int i=0; i<TAILLE; i++){	//Faut voir pour les problemes lie a TAILLE
 		for(int j=0; j<TAILLE; j++){
 			c = creerCoord(i,j);
 			g[i][j] = creerPlaceVide(c);
@@ -141,14 +142,82 @@ void rangerPlace(grille &g, place p){
 
 }
 
+{/////////////////// BASE coord ////////////////////////
+coord nouvCoord(int lin, int col){
+	coord c;
+	c.x = lin;
+	c.y = col;
+	return c;
+}
 
+void afficheCoord(Coord c){
+	cout << "(" << c.x << "," << c.y << ")";
+}
+
+void afficheEnsCoord(ensCoord ec){
+	cout << "[";
+	for(int i = 0; i < ec.nbElts; i++){
+		afficheCoord(ec.tab[i]);
+		cout << "; ";
+	}
+	cout << "]" << endl;
+}
+
+ensCoord nouvEnsCoord(){
+	ensCoord ec;
+	ec.nbElts = 0;
+	return ec;
+}
+
+void ajouteEnsCoord(ensCoord &ec, Coord c){
+	bool stop = false;
+	for(int i = 0; i < ec.nb; i++){
+		if(egalCoord(c,ec.tab[i]))
+			stop = true;
+	}
+	if(!stop){
+		ec.tab[ec.nbElts] = c;
+		ec.nbElts++;
+	}
+}
+
+bool egalCoord(Coord c1, Coord c2){
+	return c1.x == c2.x and c1.y and c2.y;
+}
+
+int max(int a, int b){
+	if(a > b)
+		return a;
+	else
+		return b;
+}
+int min(int a, int b){
+	if(a < b)
+		return a;
+	else 
+		return b;
+}
+ensCoord voisines(Coord c){
+	ensCoord ec;
+	ec = nouvEnsCoord();
+	for(int i = max(c.x - 1, 0); i <= min(c.x + 1, TAILLE -1); i++){
+		for(int j = max(c.y - 1, 0); j <= min(c.y + 1, TAILLE -1); j++){
+			if(i != c.x or j != c.y){
+				ajouteEnsCoord(ec,nouvCoord(i,j));
+			}
+		}
+	}
+	return ec;
+}
+
+}
 
 {//////////// COMPOSES ascendants ////////////////
+
 bool estVide(place p){
 	b = numeroFourmi(p) == -1;
 	b = b and not contientSucre(p);
-	b = b and not contientNid(p);
-	return (b and not surUnePiste(p));
+	return (b and not contientNid(p));
 }
 
 bool plusProcheNid(place p1, place p2){
@@ -163,7 +232,8 @@ void placerNid(grille &g, ensCoord ec){
 	for(int i = 0; i < ec.nb; i++){
 		place p;
 		chargerPlace(g,ec.tab[i],p);
-		poserNid(p);
+		if(estVide(p))
+			poserNid(p);
 		rangerPlace(g,p);
 	}
 }
@@ -172,7 +242,8 @@ void placerSucre(grille &g, ensCoord ec){
 	for(int i = 0; i < ec.nb; i++){
 		place p;
 		chargerPlace(g,ec.tab[i],p);
-		poserSucre(p);
+		if(estVide(p))
+			poserSucre(p);
 		rangerPlace(g,p);
 	}
 }
@@ -188,17 +259,33 @@ void placerFourmis(grille &g, tabFourmi t){
 
 void initialiserGrille(grille &g,tabFourmi t, ensCoord ec_s, ensCoord ec_nid){
 	chargerGrilleVide(g);
+	placerFourmis(g,t);
 	placerNid(g,ec_n);
 	placerSucre(g,ec_s);
-	placerFourmis(g,t);
-	//lineariserPheroNid(g);
+	lineariserPheroNid(g);
 }
 
 void diminuerPheroSucreGrille(grille &g){
 	for(int i = 0; i < TAILLE; i++){
 		for(int j = 0; j < TAILLE; j++){
-			g[i][j].phero = g[i][j].phero - 5;
+			diminuerPheroSucre(g[i][j]);
 }}}
+
+void lineariserPheroNid(grille &g){
+	for(int k = 0; k < TAILLE; k++){
+		for(int i = 0; i < TAILLE; i++){
+			for(int j = 0; j < TAILLE; j++){
+				ensCoord voisin = voisines(g[i][j].c);
+				for(int v = 0; v < voisin.nb; v++){
+					place p;
+					chargerPlace(g,voisin.tab[v],p);
+					g[i][j].nid = max(p.nid,g[i][j].nid);
+				g[i][j].nid = max(0,g[i][j].nid-(1./TAILLE));
+				}
+			}
+		}
+	}
+}
 }
 
 {//////////// COMPOSES descendants ///////////////
@@ -207,21 +294,18 @@ bool condition_1(fourmi f, place p1, place p2){
 }
 	
 void action_1(fourmi &f, place &p1, place &p2){
-	if(condition_1(f,p1,p2){
 		chargerSucre(f);
 		p2.sucre = false;
-		poserPheroSucre(p1, 255);
-	}
+		poserPheroSucre(p1);
 }
+
 bool condition_2(fourmi f, place p1, place p2){
 	return porteSucre(f) and contientNid(p2);
 }
 
 void action_2(fourmi &f, place &p1, place &p2){
-	if(condition_2(f,p1,p2)){
 		poserSucre(p2);
 		dechargerSucre(f);
-	}
 }
 	
 bool condition_3(fourmi f, place p1, place p2){
@@ -230,13 +314,18 @@ bool condition_3(fourmi f, place p1, place p2){
 }
 
 void action_3(fourmi &f, place &p1, place &p2){
+	deplacerFourmi(f,p1,p2);
+	poserPheroSucre(p1);
+}
 	
 bool condition_4(fourmi f, place p1, place p2){
-	return not porteSucre(f) and surUnePiste(p1) 
+	return not porteSucre(f) and surUnePiste(p1) and estVide(p2)
 	and surUnePiste(p2) and plusLoinNid(p2,p1);
 }
 
 void action_4(fourmi &f, place &p1, place &p2){
+	deplaceFourmi(f,p1,p2);
+}
 	
 bool condition_5(fourmi f, place p1, place p2){
 	return not porteSucre(f) and surUnePiste(p2) 
@@ -244,11 +333,16 @@ bool condition_5(fourmi f, place p1, place p2){
 }
 
 void action_5(fourmi &f, place &p1, place &p2){
+	deplaceFourmi(f,p1,p2);
+}
+
 bool condition_6(fourmi f, place p1, place p2){
 	return not porteSucre and estVide(p2);
 }
 
 void action_6(fourmi &f, place &p1, place &p2){
+	deplaceFourmi(f,p1,p2);
+}
 
 bool condition_n(int regle, fourmi f, place p1, place p2){
 	switch(regle){
@@ -269,13 +363,68 @@ bool condition_n(int regle, fourmi f, place p1, place p2){
 			exit(1);
 	}
 }
-void mettreAJourUneFourmi(grille &g, fourmi &f);
 
-void initialiserEmplacements(tabFourmi &t, ensCoord &ec_sucre, ensCoord &ec_nid);
+void action_n(int regle, fourmi f, place p1, place p2){
+	switch(regle){
+		case 1:
+			action_1(f, p1, p2);
+		case 2:
+			action_2(f, p1, p2);
+		case 3:
+			action_3(f, p1, p2);
+		case 4:
+			action_4(f, p1, p2);
+		case 5:
+			action_5(f, p1, p2);
+		case 6:
+			action_6(f, p1, p2);
+		default:
+			cerr << "Regle " << regle << "inexistante." << endl;
+			exit(1);
+	}
+}
+
+void mettreAJourUneFourmi(grille &g, fourmi &f){
+	place p1,p2,p_temp;
+	chargerPlace(g,f.c,p1);
+	ensCoord voisin = voisines(p1.c);
+	vector<place> voisin_vide;
+	int regle_app = 6;
+	for(int regle = 1; regle < 7; regle++){
+		for(int v = 0; v < voisin.nb; v++){
+			chargerPlace(g,voisin.tab[v],p_temp);
+			if(condition_n(regle,f,p1,p_temp) and regle <= regle_app){
+				regle_app = regle;
+				p2 = p_temp;
+				if(regle_app == 6)
+					voisin_vide.push_back(p2);
+			}
+		}
+	}
+	if(regle_app == 6)
+		action_n(regle_app,f,p1,voisin_vide[rand()%voisin_vide.size()];
+	else
+		action_n(regle_app,f,p1,p2);
+	rangerPlace(g,p1);
+	rangerPlace(g,p2);
+}
+
+void initialiserEmplacements(tabFourmi &tf, ensCoord &ec_sucre, ensCoord &ec_nid){
+	ensCoord ec_fourmi = nouvEnsCoord();
+	for(int i = 0; i < NBFOURMI; i++)
+		ajouteEnsCoord(ec_fourmi,nouvCoord(rand()%20,rand()%20));
+	for(int i = 0; i < NBSUCRE; i++)
+		ajouteEnsCoord(ec_sucre,nouvCoord(rand()%20,rand()%20));
+	for(int i = 0; i < NBNID; i++)
+		ajouteEnsCoord(ec_nid,nouvCoord(rand()%20,rand()%20));
+	chargerTabFourmis(tf,ec_fourmi);
+}
+
 void dessinerGrille(grille &g);
-void mettreAJourEnsFourmis(grille &g, tabFourmi &t){
+
+void mettreAJourEnsFourmis(grille &g, tabFourmi &tf){
 	for(int i = 0; i < t.nb; i++)
-		mettreAJourUneFourmi(g, t.tab[i]);
+		mettreAJourUneFourmi(g, tf.tab[i]);
 }
 }
 
@@ -285,17 +434,21 @@ void coherence(tabFourmi t, grille g){
 	for(int i = 0; i < t.nb; i++){
 		if(t.tab[i].n != i) exit(1);
 		if(t.tab[i].c != g[t.tab[i].c.x][t.tab[i].c.y];
-}}
-	
+	}
+}
+
+}
+
 int main(){
 	grille g;
-	tabFourmi t;
+	tabFourmi tf;
 	ensCoord ec_sucre, ec_nid;
-	initialiserEmplacements(tabFourmi &t, ensCoord &ec_sucre, ensCoord &ec_nid);
-	initialiserGrille(g, t, ec_sucre, ec_nid);
+	initialiserEmplacements(tf, ec_sucre, ec_nid);
+	initialiserGrille(g, tf, ec_sucre, ec_nid);
 	while(true){
 		dessinerGrille(g);
 		mettreAJourEnsFourmis(g,t);
+		diminuerPheroSucreGrille(g);
 	}
 	return 0;
 }
