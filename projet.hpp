@@ -6,7 +6,7 @@ using namespace std;
 const int TAILLE = 20;
 const int NMAX = 40;
 
-{///////////// TYPES ///////////////
+///////////// TYPES ///////////////
 struct coord{
 	int x;
 	int y;
@@ -20,7 +20,7 @@ struct fourmi{
 
 struct tabFourmi{
     fourmi tab[NMAX];
-    int nb; //nombre d'éléments du tableau
+    int nb; //nombre d'elements du tableau
 };
 
 struct place{
@@ -37,11 +37,9 @@ struct ensCoord {
 };
 
 typedef vector<vector<place>> grille;
-
-}
 	
 
-{//////////////// BASIC fourmi ////////////////////
+//////////////// BASIC fourmi ////////////////////
 /*Cree une fourmi ne portant pas de sucre
  * @param a l'indice de la fourmi dans tabFourmi
  * @param c les coordonnées de la fourmi
@@ -86,8 +84,8 @@ void chargerSucre(fourmi &f);
 /*Deplace une fourmi
  * @param f la fourmi
 */
-void deplaceFourmi(&fourmi, coord);
-}
+void deplaceFourmi(fourmi &f, coord c);
+
 
 /**Crée un ensemble de fourmi positionnees aux coordonnees spécifiees par l'ensemble de coordonnees donné en 2eme parametre
  * @param[out] tf un tabFourmi
