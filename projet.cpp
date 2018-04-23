@@ -59,7 +59,7 @@ void chargerTabFourmis(tabFourmi &tf, ensCoord ec){
 place creerPlaceVide(coord c){
 	place p;
 	p.c = c;
-	p.sucre = p.sucre = p.nid = p.phero = 0;
+	p.sucre = p.nid = p.phero = 0;
 	p.fourmi = -1;
 	return p;
 }

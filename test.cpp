@@ -13,8 +13,6 @@ void afficheFourmi(fourmi f){
 	<< f.c.x << ";" << f.c.y << ")" << endl; 
 }
 
-void testFourmi();
-
 void testCreerFourmi(){
 	coord c; fourmi f;
 	c.x = 3; c.y = 2;
@@ -93,7 +91,34 @@ void testDeplaceFourmi(){
 	ASSERT(egalCoord(f.c,c));
 	}
 
-
+void testPlace(){
+	coord c = nouvCoord(0,0);
+	place p = creerPlaceVide(c);
+	ASSERT(egalCoord(coordPlace(p),c));
+	ASSERT(estVide(p) and pheroSucre(p) == 0);
+	poserSucre(p);
+	ASSERT(contientSucre(p));
+	poserNid(p);
+	ASSERT(contientNid(p));
+	p.nid = 0;
+	fourmi f = creerFourmi(0,nouvCoord(5,5));
+	afficheFourmi(f);
+	poserFourmi(f,p);
+	afficheFourmi(f);
+	ASSERT(numeroFourmi(p) == 0);
+	enleverFourmi(p);
+	ASSERT(p.fourmi == -1);
+	poserPheroSucre(p);
+	ASSERT(p.phero == 255);
+	place p2 = creerPlaceVide(nouvCoord(2,3));
+	poserFourmi(f,p2);
+	afficheFourmi(f);
+	deplacerFourmi(f,p2,p);
+	ASSERT(numeroFourmi(p) == 0);
+	ASSERT(numeroFourmi(p2) == -1);
+	afficheFourmi(f);
+}
+	
 int main(){
 	/*tabFourmi tf;
 	ensCoord ec_f = nouvEnsCoord();
@@ -110,5 +135,6 @@ int main(){
 	testDechargerSucre();
 	testChargerSucre();
 	testDeplaceFourmi();
+	testPlace();
 	return 0;
 }
