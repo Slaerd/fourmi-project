@@ -183,7 +183,7 @@ void diminuerPheroSucre(place &p);
  *@param/res p1 la place de depart
  *@param/res p2 la place d'arrivee
  */
-void deplaceFourmi(fourmi &f, place &p1, place &p2);
+void deplacerFourmi(fourmi &f, place &p1, place &p2);
 
 //////////////////	BASIC grille /////////////////////
 

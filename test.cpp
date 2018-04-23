@@ -1,6 +1,6 @@
 #include <iostream>
-#include <projet.hpp>
-#include <projet.cpp>
+#include "projet.hpp"
+#include "projet.cpp"
 using namespace std;
 
 #define ASSERT(test) if (!(test)) cout << "Test failed in file " << __FILE__ \
@@ -19,10 +19,10 @@ void testCreerFourmi(){
 	coord c; fourmi f;
 	c.x = 3; c.y = 2;
 	f = creerFourmi(4,c);
-	ASSERT(f.n == 4 and f.c = c);
+	ASSERT(f.n == 4 and egalCoord(f.c,c));
 	c.x = 26; c.y = 3;
 	f = creerFourmi(15,c);
-	ASSERT(f.n == 15 and f.c = c);
+	ASSERT(f.n == 15 and egalCoord(f.c,c));
 }
 
 
@@ -30,10 +30,10 @@ void testCoordFourmis(){
 	coord c;
 	c.x = 14; c.y = 12;
 	fourmi f = creerFourmi(1,c);
-	ASSERT(coordFourmis(f) == c);
+	ASSERT(egalCoord(coordFourmis(f),c));
 	c.x = 2; c.y = 2;
 	f = creerFourmi(24,c);
-	ASSERT(coordFourmis(f) == c);
+	ASSERT(egalCoord(coordFourmis(f),c));
 }
 
 
@@ -87,20 +87,28 @@ void testDeplaceFourmi(){
 	coord c;
 	c.x = 2; c.y = 3;
 	deplaceFourmi(f,c);
-	ASSERT(f.c == c);
+	ASSERT(egalCoord(f.c,c));
 	c.x = 0; c.y = 0;
-	deplacefourmi(f,c);
-	ASSERT(f.c == c);
-}
+	deplaceFourmi(f,c);
+	ASSERT(egalCoord(f.c,c));
+	}
 
 
 int main(){
-	tabFourmi tf;
+	/*tabFourmi tf;
 	ensCoord ec_f = nouvEnsCoord();
 	for(int i = 0; i < 5; i++)
 		ajouteEnsCoord(ec_f,nouvCoord(i,i));
 	chargerTabFourmi(tf,ec_f);
 	for(int i = 0; i < tf.nb; i++)
-		afficheFourmi(tf.tab[i]);
+		afficheFourmi(tf.tab[i]);*/
+	testCreerFourmi();
+	testCoordFourmis();
+	testNumFourmis();
+	testPorteSucre();
+	testRentreNid();
+	testDechargerSucre();
+	testChargerSucre();
+	testDeplaceFourmi();
 	return 0;
 }

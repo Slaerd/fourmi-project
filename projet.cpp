@@ -1,6 +1,5 @@
 #include <cstdlib>
 #include <vector>
-#include "projet.hpp"
 
 ////////////////// BASE fourmi //////////////////
 
@@ -150,7 +149,7 @@ ensCoord nouvEnsCoord(){
 }
 
 bool egalCoord(coord c1, coord c2){
-	return c1.x == c2.x and c1.y and c2.y;
+	return c1.x == c2.x and c1.y == c2.y;
 }
 
 void ajouteEnsCoord(ensCoord &ec, coord c){
@@ -323,7 +322,7 @@ bool condition_4(fourmi f, place p1, place p2){
 }
 
 void action_4(fourmi &f, place &p1, place &p2){
-	deplaceFourmi(f,p1,p2);
+	deplacerFourmi(f,p1,p2);
 }
 	
 bool condition_5(fourmi f, place p1, place p2){
@@ -332,7 +331,7 @@ bool condition_5(fourmi f, place p1, place p2){
 }
 
 void action_5(fourmi &f, place &p1, place &p2){
-	deplaceFourmi(f,p1,p2);
+	deplacerFourmi(f,p1,p2);
 }
 
 bool condition_6(fourmi f, place p1, place p2){
@@ -340,7 +339,7 @@ bool condition_6(fourmi f, place p1, place p2){
 }
 
 void action_6(fourmi &f, place &p1, place &p2){
-	deplaceFourmi(f,p1,p2);
+	deplacerFourmi(f,p1,p2);
 }
 
 bool condition_n(int regle, fourmi f, place p1, place p2){
@@ -410,8 +409,8 @@ void mettreAJourUneFourmi(grille &g, fourmi &f){
 
 void initialiserEmplacements(tabFourmi &tf, ensCoord &ec_sucre, ensCoord &ec_nid){
 	//////// MANUEL //////////
-	/*ensCoord ec_fourmi = nouvEnsCoord();
-	int k, x, y;
+	ensCoord ec_fourmi = nouvEnsCoord();
+	/*int k, x, y;
 	cout << "Nb fourmis ?" << endl;
 	cin >> k;
 	while(ec_fourmi.nb < k){
@@ -448,13 +447,15 @@ void initialiserEmplacements(tabFourmi &tf, ensCoord &ec_sucre, ensCoord &ec_nid
 	ajouteEnsCoord(ec_nid,nouvCoord(11,11));
 	
 	for(int i = 0; i < TAILLE; i++){
-		ajouteEnsCoord(ec_sucre,nouvCoord(0,i);
+		ajouteEnsCoord(ec_sucre,nouvCoord(0,i));
 		ajouteEnsCoord(ec_sucre,nouvCoord(i,0));
 	}
 	chargerTabFourmis(tf,ec_fourmi);
 }
 
-void dessinerGrille(grille &g);
+void dessinerGrille(grille &g){
+	//REMPLIR
+}
 
 void mettreAJourEnsFourmis(grille &g, tabFourmi &tf){
 	for(int i = 0; i < tf.nb; i++)
@@ -473,7 +474,7 @@ void coherence(tabFourmi tf, grille g){
 
 
 
-int main(){
+/*int programain(){
 	grille g;
 	tabFourmi tf;
 	ensCoord ec_sucre = nouvEnsCoord(), ec_nid = nouvEnsCoord();
@@ -485,7 +486,7 @@ int main(){
 		diminuerPheroSucreGrille(g);
 	}
 	return 0;
-}
+}*/
 	
 	
 
