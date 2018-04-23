@@ -46,6 +46,7 @@ void deplaceFourmi(fourmi &f,coord c){
 /////////////////// BASE tabFourmi ////////////////////
 
 void chargerTabFourmis(tabFourmi &tf, ensCoord ec){
+	tf.nb = 0;
 	for(int i=0; i<ec.nb; i++){
 		tf.tab[i] = creerFourmi(i,ec.tab[i]);
 		tf.nb++;
@@ -95,7 +96,7 @@ void poserNid(place &p){
 }
 void poserFourmi(fourmi &f,place &p){
 	p.fourmi = f.n;
-	f.c = p.c;
+	deplaceFourmi(f,p.c);
 }
 void enleverFourmi(place &p){
 	p.fourmi = -1;
@@ -118,10 +119,15 @@ void deplacerFourmi(fourmi &f, place &p1, place &p2){
 
 /////////////////// BASE coord ////////////////////////
 coord nouvCoord(int lin, int col){
-	coord c;
-	c.x = lin;
-	c.y = col;
-	return c;
+	if(lin >= TAILLE or col >= TAILLE){
+		cerr << "Depassement coordonnees." << endl;
+		exit(1);
+	}else{
+		coord c;
+		c.x = lin;
+		c.y = col;
+		return c;
+	}
 }
 
 void afficheCoord(coord c){
@@ -403,13 +409,48 @@ void mettreAJourUneFourmi(grille &g, fourmi &f){
 }
 
 void initialiserEmplacements(tabFourmi &tf, ensCoord &ec_sucre, ensCoord &ec_nid){
-	ensCoord ec_fourmi = nouvEnsCoord();
-	for(int i = 0; i < 1; i++)
-		ajouteEnsCoord(ec_fourmi,nouvCoord(rand()%20,rand()%20));
-	for(int i = 0; i < 1; i++)
-		ajouteEnsCoord(ec_sucre,nouvCoord(rand()%20,rand()%20));
-	for(int i = 0; i < 1; i++)
-		ajouteEnsCoord(ec_nid,nouvCoord(rand()%20,rand()%20));
+	//////// MANUEL //////////
+	/*ensCoord ec_fourmi = nouvEnsCoord();
+	int k, x, y;
+	cout << "Nb fourmis ?" << endl;
+	cin >> k;
+	while(ec_fourmi.nb < k){
+		cout << "x = "; cin >> x; cout << "  y = "; cin >> y;
+		ajouteEnsCoord(ec_fourmi,nouvCoord(x,y));
+	cout << endl << "Nb nid ?" << endl;
+	cin >> k;
+	while(ec_nid.nb < k){
+		cout << "x = "; cin >> x; cout << "  y = "; cin >> y;
+		ajouteEnsCoord(ec_nid,nouvCoord(x,y));
+	cin >> k;
+	while(ec_sucre.nb < k){
+		cout << "x = "; cin >> x; cout << "  y = "; cin >> y;
+		ajouteEnsCoord(ec_sucre,nouvCoord(x,y));
+		chargerTabFourmis(tf,ec_fourmi);*/
+		
+	//////// AUTOBASE ////////////
+	ajouteEnsCoord(ec_fourmi,nouvCoord(9,9));
+	ajouteEnsCoord(ec_fourmi,nouvCoord(9,10));
+	ajouteEnsCoord(ec_fourmi,nouvCoord(9,11));
+	ajouteEnsCoord(ec_fourmi,nouvCoord(9,12));
+	ajouteEnsCoord(ec_fourmi,nouvCoord(10,9));
+	ajouteEnsCoord(ec_fourmi,nouvCoord(11,9));
+	ajouteEnsCoord(ec_fourmi,nouvCoord(12,9));
+	ajouteEnsCoord(ec_fourmi,nouvCoord(12,10));
+	ajouteEnsCoord(ec_fourmi,nouvCoord(12,11));
+	ajouteEnsCoord(ec_fourmi,nouvCoord(12,12));
+	ajouteEnsCoord(ec_fourmi,nouvCoord(11,12));
+	ajouteEnsCoord(ec_fourmi,nouvCoord(10,12));
+	
+	ajouteEnsCoord(ec_nid,nouvCoord(10,10));
+	ajouteEnsCoord(ec_nid,nouvCoord(11,10));
+	ajouteEnsCoord(ec_nid,nouvCoord(10,11));
+	ajouteEnsCoord(ec_nid,nouvCoord(11,11));
+	
+	for(int i = 0; i < TAILLE; i++){
+		ajouteEnsCoord(ec_sucre,nouvCoord(0,i);
+		ajouteEnsCoord(ec_sucre,nouvCoord(i,0));
+	}
 	chargerTabFourmis(tf,ec_fourmi);
 }
 
@@ -435,7 +476,7 @@ void coherence(tabFourmi tf, grille g){
 int main(){
 	grille g;
 	tabFourmi tf;
-	ensCoord ec_sucre, ec_nid;
+	ensCoord ec_sucre = nouvEnsCoord(), ec_nid = nouvEnsCoord();
 	initialiserEmplacements(tf, ec_sucre, ec_nid);
 	initialiserGrille(g, tf, ec_sucre, ec_nid);
 	while(true){
