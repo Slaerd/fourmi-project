@@ -164,13 +164,13 @@ void ajouteEnsCoord(ensCoord &ec, coord c){
 	}
 }
 
-int max(int a, int b){
+float max(float a, float b){
 	if(a > b)
 		return a;
 	else
 		return b;
 }
-int min(int a, int b){
+float min(float a, float b){
 	if(a < b)
 		return a;
 	else 
@@ -189,7 +189,27 @@ ensCoord voisines(coord c){
 	return ec;
 }
 
+/////////////////// BASE grille ///////////////////////
 
+void chargerGrilleVide(grille &g){
+	g = grille(TAILLE);
+	coord c;
+	for(int i=0; i<TAILLE; i++){		//Faut voir pour les problemes lie a TAILLE
+		g[i] = vector<place>(TAILLE);
+		for(int j=0; j<TAILLE; j++){
+			c = nouvCoord(i,j);
+			g[i][j] = creerPlaceVide(c);
+		}
+	}
+}
+
+void chargerPlace(grille g,coord c, place &p){
+	p = g[c.x][c.y];
+}
+
+void rangerPlace(grille &g, place p){
+	g[p.c.x][p.c.y] = p;
+}
 
 //////////// COMPOSES ascendants ////////////////
 
@@ -236,9 +256,9 @@ void placerFourmis(grille &g, tabFourmi tf){
 	}
 }
 
-void initialiserGrille(grille &g,tabFourmi t, ensCoord ec_s, ensCoord ec_n){
+void initialiserGrille(grille &g,tabFourmi tf, ensCoord ec_s, ensCoord ec_n){
 	chargerGrilleVide(g);
-	placerFourmis(g,t);
+	placerFourmis(g,tf);
 	placerNid(g,ec_n);
 	placerSucre(g,ec_s);
 	lineariserPheroNid(g);
@@ -254,37 +274,25 @@ void lineariserPheroNid(grille &g){
 	for(int k = 0; k < TAILLE; k++){
 		for(int i = 0; i < TAILLE; i++){
 			for(int j = 0; j < TAILLE; j++){
-				ensCoord voisin = voisines(g[i][j].c);
-				for(int v = 0; v < voisin.nb; v++){
-					place p;
-					chargerPlace(g,voisin.tab[v],p);
-					g[i][j].nid = max(p.nid,g[i][j].nid);
-				g[i][j].nid = max(0,g[i][j].nid-(1./TAILLE));
+				place p, pv;
+				chargerPlace(g,nouvCoord(i,j),p);
+				ensCoord voisins = voisines(p.c);
+				if(p.nid < 1){
+					for(int v = 0; v < voisins.nb; v++){
+						chargerPlace(g,voisins.tab[v],pv);
+						p.nid = max(p.nid,pv.nid);
+					}
+					p.nid = max(p.nid-1./TAILLE , 0);
+					rangerPlace(g,p);	
 				}
+					
 			}
 		}
 	}
 }
 
-/////////////////// BASE grille ///////////////////////
 
-void chargerGrilleVide(grille &g){
-	coord c;
-	for(int i=0; i<TAILLE; i++){	//Faut voir pour les problemes lie a TAILLE
-		for(int j=0; j<TAILLE; j++){
-			c = nouvCoord(i,j);
-			g[i][j] = creerPlaceVide(c);
-		}
-	}
-}
 
-void chargerPlace(grille g,coord c, place &p){
-	p = g[c.x][c.y];
-}
-
-void rangerPlace(grille &g, place p){
-	g[p.c.x][p.c.y] = p;
-}
 
 //////////// COMPOSES descendants ///////////////
 bool condition_1(fourmi f, place p1, place p2){
