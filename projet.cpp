@@ -1,9 +1,6 @@
 #include <cstdlib>
 #include <vector>
-#include <stdio.h>
-#include <stdlib.h>
 #include <time.h>
-#include <unistd.h>
 
 
 ////////////////// BASE fourmi //////////////////
@@ -401,7 +398,6 @@ void action_n(int regle, fourmi &f, place &p1, place &p2){
 }
 
 void mettreAJourUneFourmi(grille &g, fourmi &f){
-	srand(time(0));
 	place p1,p2,p_temp;
 	chargerPlace(g,f.c,p1);
 	ensCoord voisin = voisines(p1.c);
