@@ -8,6 +8,7 @@ using namespace std;
 
 
 
+
 void afficheFourmi(fourmi f){
 	cout << "Fourmi n : " << f.n << endl << "Sucre : " << f.sucre << endl << "Place : ("
 	<< f.c.x << ";" << f.c.y << ")" << endl; 
@@ -17,7 +18,9 @@ bool egalFourmi(fourmi f1, fourmi f2){
 	return f1.n == f2.n and f1.sucre == f2.sucre and egalCoord(f1.c,f2.c);
 }
 
-void testCreerFourmi(){
+
+void testBaseFourmi(){
+	//creerFourmis
 	coord c; fourmi f;
 	c.x = 3; c.y = 2;
 	f = creerFourmi(4,c);
@@ -25,75 +28,57 @@ void testCreerFourmi(){
 	c.x = 26; c.y = 3;
 	f = creerFourmi(15,c);
 	ASSERT(f.n == 15 and egalCoord(f.c,c));
-}
-
-
-void testCoordFourmis(){
-	coord c;
+	
+	//coordFourmis
 	c.x = 14; c.y = 12;
-	fourmi f = creerFourmi(1,c);
+	f = creerFourmi(1,c);
 	ASSERT(egalCoord(coordFourmis(f),c));
 	c.x = 2; c.y = 2;
 	f = creerFourmi(24,c);
 	ASSERT(egalCoord(coordFourmis(f),c));
-}
-
-
-void testNumFourmis(){
-	fourmi f;
+	
+	//numFourmis
 	f.n = 1;
 	ASSERT(numFourmis(f) == 1);
 	f.n = 24;
 	ASSERT(numFourmis(f) == 24);
-}
-
-
-void testPorteSucre(){
-	fourmi f;
+	
+	//porteSucre
 	f.sucre = 3;
 	ASSERT(porteSucre(f));
 	f.sucre = 0;
-	ASSERT(not porteSucre(f));	
-}
-
-void testRentreNid(){
-	fourmi f;
+	ASSERT(not porteSucre(f));
+	
+	//rentreNid
 	f.sucre = 3;
 	ASSERT(rentreNid(f));
 	f.sucre = 0;
 	ASSERT(not rentreNid(f));
-}
-
-void testDechargerSucre(){
-	fourmi f;
+	
+	//dechargerSucre
 	f.sucre = 2;
 	dechargerSucre(f);
 	ASSERT(f.sucre == 0);
 	f.sucre = 0;
 	dechargerSucre(f);
 	ASSERT(f.sucre == 0);
-}
-
-void testChargerSucre(){
-	fourmi f;
+	
+	//chargerSucre
 	f.sucre = 2;
 	chargerSucre(f);
 	ASSERT(f.sucre == 3);
 	f.sucre = 0;
 	chargerSucre(f);
 	ASSERT(f.sucre == 1);
-}
-
-void testDeplaceFourmi(){
-	fourmi f;
-	coord c;
+	
+	//deplaceFourmi
 	c.x = 2; c.y = 3;
 	deplaceFourmi(f,c);
 	ASSERT(egalCoord(f.c,c));
 	c.x = 0; c.y = 0;
 	deplaceFourmi(f,c);
 	ASSERT(egalCoord(f.c,c));
-	}
+}
 
 void testPlace(){
 	/// BASE ///
