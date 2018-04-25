@@ -19,7 +19,7 @@ bool egalFourmi(fourmi f1, fourmi f2){
 }
 
 
-void testBaseFourmi(){
+void testFourmi(){
 	//creerFourmis
 	coord c; fourmi f;
 	c.x = 3; c.y = 2;
@@ -324,14 +324,7 @@ void testMouvement(){
 	
 
 int main(){
-	testCreerFourmi();
-	testCoordFourmis();
-	testNumFourmis();
-	testPorteSucre();
-	testRentreNid();
-	testDechargerSucre();
-	testChargerSucre();
-	testDeplaceFourmi();
+	testFourmi();
 	testPlace();
 	testCoord();
 	testGrille();
