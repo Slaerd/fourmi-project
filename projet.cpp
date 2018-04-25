@@ -1,7 +1,11 @@
 #include <cstdlib>
 #include <vector>
 #include <time.h>
+#include <sstream>
+#include <fstream>
+#include <string>
 
+int compteurFichier = 0;
 
 ////////////////// BASE fourmi //////////////////
 
@@ -480,8 +484,26 @@ void initialiserEmplacements(tabFourmi &tf, ensCoord &ec_sucre, ensCoord &ec_nid
 }
 
 void dessinerGrille(grille &g){
-	//REMPLIR
+	int r,v,b;
+	ofstream fichier("grille.ppm", ios::trunc); //le ios::trunc permet d'effacer le fichier de ce nom s'il existe déjà
+	fichier << "P3" << endl
+		<< 20 << " " << 20 << " " << endl
+		255 << " " << endl
+	for(int i = 0; i < 20; i++){
+		for(int j =0; j < 20; j++){
+			if (g[i][j].fourmi != -1) {fichier << 255 << " " << 255 << " " << 255 << "   "; break;}
+			if (g[i][j].sucre > 0) {fichier << 237 << " " << 127 << " " << 16 << "   "; break;}
+			if (g[i][j].nid == 1) {fichier << 0 << " " << 0 << " " << 255 << "   "; break;}
+			if (g[i][j].phero > 0) {fichier << 255 << " " << 0 << " " << 0 << "   "; break;}
+			fichier << 0 << " " << 255 << " " << 0 << "   ";
+		}
+		fichier << endl;
+	}
+	fichier.close();
 }
+
+
+
 
 void mettreAJourEnsFourmis(grille &g, tabFourmi &tf){
 	for(int i = 0; i < tf.nb; i++)
