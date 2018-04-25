@@ -1,5 +1,10 @@
 #include <cstdlib>
 #include <vector>
+#include <stdio.h>
+#include <stdlib.h>
+#include <time.h>
+#include <unistd.h>
+
 
 ////////////////// BASE fourmi //////////////////
 
@@ -39,8 +44,6 @@ void chargerSucre(fourmi &f){
 void deplaceFourmi(fourmi &f,coord c){
     f.c = c;
 }
-
-
 
 /////////////////// BASE tabFourmi ////////////////////
 
@@ -220,7 +223,7 @@ bool estVide(place p){
 }
 
 bool plusProcheNid(place p1, place p2){
-	return pheroNid(p1) > pheroNid(p2);
+	return pheroNid(p1) >= pheroNid(p2);
 }
 
 bool plusLoinNid(place p1, place p2){
@@ -296,12 +299,12 @@ void lineariserPheroNid(grille &g){
 
 //////////// COMPOSES descendants ///////////////
 bool condition_1(fourmi f, place p1, place p2){
-	return not porteSucre(f) and contientSucre(p2);
+	return !porteSucre(f) and contientSucre(p2) and !contientNid(p2);
 }
 	
 void action_1(fourmi &f, place &p1, place &p2){
 		chargerSucre(f);
-		p2.sucre = false;
+		p2.sucre--;
 		poserPheroSucre(p1);
 }
 
@@ -325,7 +328,7 @@ void action_3(fourmi &f, place &p1, place &p2){
 }
 	
 bool condition_4(fourmi f, place p1, place p2){
-	return not porteSucre(f) and surUnePiste(p1) and estVide(p2)
+	return !porteSucre(f) and surUnePiste(p1) and estVide(p2)
 	and surUnePiste(p2) and plusLoinNid(p2,p1);
 }
 
@@ -334,7 +337,7 @@ void action_4(fourmi &f, place &p1, place &p2){
 }
 	
 bool condition_5(fourmi f, place p1, place p2){
-	return not porteSucre(f) and surUnePiste(p2) 
+	return !porteSucre(f) and surUnePiste(p2) 
 	and estVide(p2);
 }
 
@@ -343,7 +346,7 @@ void action_5(fourmi &f, place &p1, place &p2){
 }
 
 bool condition_6(fourmi f, place p1, place p2){
-	return not porteSucre and estVide(p2);
+	return !porteSucre(f) and estVide(p2);
 }
 
 void action_6(fourmi &f, place &p1, place &p2){
@@ -365,41 +368,53 @@ bool condition_n(int regle, fourmi f, place p1, place p2){
 		case 6:
 			return condition_6(f, p1, p2);
 		default:
-			cerr << "Regle " << regle << "inexistante." << endl;
+			cerr << "Regle " << regle << " inexistante." << endl;
 			exit(1);
 	}
 }
 
 void action_n(int regle, fourmi &f, place &p1, place &p2){
+	cout << regle << endl;
 	switch(regle){
 		case 1:
 			action_1(f, p1, p2);
+			break;
 		case 2:
 			action_2(f, p1, p2);
+			break;
 		case 3:
 			action_3(f, p1, p2);
+			break;
 		case 4:
 			action_4(f, p1, p2);
+			break;
 		case 5:
 			action_5(f, p1, p2);
+			break;
 		case 6:
 			action_6(f, p1, p2);
+			break;
 		default:
-			cerr << "Regle " << regle << "inexistante." << endl;
+			cerr << "Regle " << regle << " inexistante." << endl;
 			exit(1);
 	}
 }
 
 void mettreAJourUneFourmi(grille &g, fourmi &f){
+	srand(time(0));
 	place p1,p2,p_temp;
 	chargerPlace(g,f.c,p1);
 	ensCoord voisin = voisines(p1.c);
 	vector<place> voisin_vide;
-	int regle_app = 6;
+	afficheCoord(f.c);
+	int regle_app = 7;
 	for(int regle = 1; regle < 7; regle++){
 		for(int v = 0; v < voisin.nb; v++){
 			chargerPlace(g,voisin.tab[v],p_temp);
-			if(condition_n(regle,f,p1,p_temp) and regle <= regle_app){
+			//cout << "regle_app = " << regle_app << endl;
+			if(condition_n(regle,f,p1,p_temp) and regle < regle_app){
+				//cout << "regle_app = " << regle_app << endl;
+				//cout << "regle = " << regle << endl;
 				regle_app = regle;
 				p2 = p_temp;
 				if(regle_app == 6)
@@ -407,12 +422,19 @@ void mettreAJourUneFourmi(grille &g, fourmi &f){
 			}
 		}
 	}
-	if(regle_app == 6)
-		action_n(regle_app,f,p1,voisin_vide[rand()%voisin_vide.size()]);
-	else
+	if(regle_app < 6){
+		//cout << regle_app << endl;
 		action_n(regle_app,f,p1,p2);
-	rangerPlace(g,p1);
-	rangerPlace(g,p2);
+		rangerPlace(g,p1);
+		rangerPlace(g,p2);		
+	}else{	
+		if(regle_app == 6){
+			place voisin_rand = voisin_vide[rand()%voisin_vide.size()];
+			action_n(regle_app,f,p1,voisin_rand);
+			rangerPlace(g,p1);
+			rangerPlace(g,p2);
+		}	
+	}
 }
 
 void initialiserEmplacements(tabFourmi &tf, ensCoord &ec_sucre, ensCoord &ec_nid){
